@@ -1,0 +1,24 @@
+@import "../css/typography.css";
+
+body {
+    margin: 0;
+    background-color: #121212;
+    color: #a0a0a0;
+    font-family: Hack, monospace;
+}
+
+h4 {
+    color: #4e82aa;
+}
+
+a {
+    color: #4e82aa;
+}
+
+hr {
+    border: 0;
+    margin: 30px 0 30px 0;
+    border-top: 2px dashed #a0a0a0;
+}
+
+pre, code { font-family: Hack, monospace; }

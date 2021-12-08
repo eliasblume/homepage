@@ -1,0 +1,130 @@
+---
+title: How to use Regex in JS/TS
+
+---
+
+
+## A quick introduction to regex
+
+first of all, you should know what a regex is and how it work. To find this out and play around with regex and your search criteria I would recommend [regex101](https://regex101.com) because it explains very well what you expression is doing
+
+## A few examples 
+
+
+lets say you want to get every occurrence of an attribute of a HTML node
+so this is our example HTML
+
+
+```html
+<div data-id="ids-1234">text...text</div>
+```
+so a valid regex to match this would be
+
+```js
+ids-[0-9]+
+```
+
+and so the js code 
+
+```js
+const text = '<div data-id="ids-1234">text...text</div> <div data-id="ids-4567">text...text</div>'
+const pattern = new RegExp('(ids-[0-9]+)', 'g')
+console.log(text.match(pattern)) // ["ids-1234", "ids-4567"]
+```
+
+
+just as a quick note both ways do the same but the first one is in my eyes way more versatile:
+```js
+const pattern1 = new RegExp('ids-[0-9]+', 'g')
+const pattern2 = new RegExp(/ids-[0-9]+/g)
+```
+this "snippet" should be the right choice for most use cases that aren't complicated. but there i a second options that seems similar at first but should be used with caution.
+## RegExp.prototype.exec()
+the RegExp Object is state-full! [read more in the Mozilla docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec)
+
+but what this means is a very unexpected behavior (very js unlike)
+
+```js
+const text = '<div data-id="ids-1234">text...text</div> <div data-id="ids-4567">text...text</div>'
+const pattern = new RegExp('ids-[0-9]+', 'g'
+console.log(pattern.exec(text)) 
+// ["ids-1234", index: 14, input: "...", groups: undefined]
+console.log(pattern.exec(text))
+// ["ids-4567", index: 56, input: "...", groups: undefined]
+console.log(pattern.exec(text))
+// null
+console.log(pattern.exec(text))
+// ["ids-1234", index: 14, input: "...", groups: undefined]
+```
+
+it may take a bit to understand this behavior but basically the RegExp.prototype.exec() goes with every new call to the next matching expression until none is left. then it returns null. after this it starts over.
+
+## Groups in JS regex
+so why use RegExp.prototype.exec() at all?
+lets say we just want to add a capture group in our regex:
+```js 
+ids-(?<id>[0-9]+) 
+```
+```js
+const text = '<div data-id="ids-1234">text...text</div> <div data-id="ids-4567">text...text</div>'
+const pattern = new RegExp('ids-(?<id>[0-9]+)', 'g')
+console.log(text.match(pattern)) 
+// ["ids-1234", "ids-4567"]
+```
+so we still only get the general match but we can not target our group
+
+a possible way would be to use regex.exec() and write a little while loop wrapper.
+
+or just use [String.prototype.matchAll()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll)
+
+```js
+const matches = [ ...text.matchAll(pattern)]
+console.log(matches[0])
+// ["ids-1234", "1234", index: 14, input: "<div data-id="ids-1234">text...text</div> <div data-id="ids-4567">text...text</div>", groups: {…}]
+const ids = matches.map(match => match.groups.id)
+console.log(ids)
+// ["1234", "4567"]
+```
+
+and yes this stupid syntax is needed "[ ...text.matchAll(pattern)]" or it wont work
+
+if we have more advanced group structure we can build up arrays this way  very nice.
+
+
+```html
+<div href='/movie1' data-id='ids-1234'>Movie 1<a>text..</a></div>
+<div href='/movie2' data-id='ids-3231'>Movie 3</div>
+```
+
+```js
+const text = `<div href='/movie1' data-id='ids-1234'>Movie 1<a>text..</a></div>
+<div href='/movie2' data-id='ids-3231'>Movie 3</div>`
+const pattern = new RegExp('ids-(?<id>[0-9]+).{1,4}>(?<name>[A-Z-a-z0-9\\s]+)<', 'g')
+const matches = [ ...text.matchAll(pattern)]
+
+const data = matches.map(match => match.groups)
+console.log(data)
+// -->
+[
+    {
+        "id": "1234",
+        "name": "Movie 1"
+    },
+    {
+        "id": "3231",
+        "name": "Movie 3"
+    }
+]
+
+```
+## Some extra thoughts
+
+**you have to double escape this**
+```js
+new RegExp('\\d\\w', 'g') 
+// becomes
+/\d\w/g
+```
+
+
+maybe if you want to scrape a webpage you should use [cheerio](https://cheerio.js.org/) but a regex will be way more faster and not asynchronous ...
