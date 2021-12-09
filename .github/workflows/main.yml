@@ -32,8 +32,12 @@ jobs:
       - name: build
         run: yarn build
 
-      - name: add key
-        run: echo '${{ secrets.SSH_KEY }}' >> id_rsa
-
-      - name: copy with rsync
-        run: rsync -av --delete --progress --rsh="ssh -i id_rsa" public  root@178.238.236.41:/var/www/elias-blu.me/public
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@5.1
+        with:
+          switches: -av --delete --progress
+          path: public/
+          remote_path: /var/www/elias-blu.me/public
+          remote_host: ${{ secrets.IP_SERVER }}
+          remote_user: root
+          remote_key: ${{ secrets.SSH_KEY }}
