@@ -16,10 +16,9 @@ export default function Template() {
             }
         }
     `);
-    console.log(data);
     return (
         <div style={{ margin: "6px" }}>
-            <h2 style={{ color: Colors.red }}>Posts</h2>
+            <h2 style={{ color: Colors.red, textShadow: " 0 0 2px " + Colors.red + "e6" }}>Posts</h2>
             <ul>
                 {data.allMdx.nodes.map(node => (
                     <li>
