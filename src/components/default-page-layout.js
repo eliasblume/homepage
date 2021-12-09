@@ -17,7 +17,9 @@ const Colorize = props => (
 const Inverted = props => (
     <a style={{ color: Colors.background, backgroundColor: Colors.foreground }}> {props.children} </a>
 );
-const shortcodes = { Link, Colorize, Inverted };
+
+const SSE = props => <div className={"sse"}>{"<!--sse-->" + props.children + " <!--/sse-->"}</div>;
+const shortcodes = { Link, Colorize, Inverted, SSE };
 
 export default ({ children }) => (
     <div>
