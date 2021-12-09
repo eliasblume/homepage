@@ -28,9 +28,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: install dependencies
         run: yarn
-      - name: set build env
-        run: export GATSBY_BUILDINFO=${{ github.sha }}
+
       - name: build
+        env:
+          GATSBY_BUILDINFO: ${{ github.sha }}
         run: yarn build
 
       - name: rsync deployments
