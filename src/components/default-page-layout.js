@@ -21,7 +21,7 @@ export default ({ children }) => (
         <div style={contentStyle}>
             <MDXProvider components={shortcodes}>{children}</MDXProvider>
             <hr />
-            <Articles />
         </div>
+        <Articles />
     </div>
 );

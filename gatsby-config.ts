@@ -1,5 +1,6 @@
 import rehypeHighlight from "rehype-highlight";
 import remarkHighlight from "remark-highlight.js";
+import "dotenv/config";
 
 module.exports = {
     siteMetadata: {
