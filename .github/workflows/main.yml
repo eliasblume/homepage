@@ -38,4 +38,4 @@ jobs:
           echo '${{ secrets.DEPLOY_KEY }}' >> ~/.ssh/id_rsa
 
       - name: copy with rsync
-        run: rsync -av --delete --rsh=ssh public root@${{ secrets.IP_SERVER }}:/var/www/elias-blu.me/public
+        run: rsync -av --delete --progress --rsh="ssh -i ~/.ssh/id_rsa" public root@${{ secrets.IP_SERVER }}:/var/www/elias-blu.me/public
