@@ -33,9 +33,7 @@ jobs:
         run: yarn build
 
       - name: add key
-        run: |
-          mkdir -p ~/.ssh
-          echo '${{ secrets.DEPLOY_KEY }}' >> ~/.ssh/id_rsa
+        run: echo '${{ secrets.SSH_KEY }}' >> id_rsa
 
       - name: copy with rsync
-        run: rsync -av --delete --progress --rsh="ssh -i ~/.ssh/id_rsa" public root@${{ secrets.IP_SERVER }}:/var/www/elias-blu.me/public
+        run: rsync -av --delete --progress --rsh="ssh -i id_rsa" public  root@178.238.236.41:/var/www/elias-blu.me/public
