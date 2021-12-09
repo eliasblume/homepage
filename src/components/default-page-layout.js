@@ -9,7 +9,11 @@ const contentStyle = {
     margin: "6px",
 };
 
-const Colorize = props => <a style={{ color: Colors[props.color] }}> {props.children} </a>;
+const Colorize = props => (
+    <a style={{ color: Colors[props.color], textShadow: " 0 0 2px " + Colors[props.color] + "e6" }}>
+        {props.children}
+    </a>
+);
 const Inverted = props => (
     <a style={{ color: Colors.background, backgroundColor: Colors.foreground }}> {props.children} </a>
 );
