@@ -18,16 +18,26 @@ const Inverted = props => (
     <a style={{ color: Colors.background, backgroundColor: Colors.foreground }}> {props.children} </a>
 );
 
-const SSE = props => <div className={"sse"}>{"<!--sse-->" + props.children + " <!--/sse-->"}</div>;
-const shortcodes = { Link, Colorize, Inverted, SSE };
+const shortcodes = { Link, Colorize, Inverted };
 
-export default ({ children }) => (
-    <div>
-        <Header />
-        <div style={contentStyle}>
-            <MDXProvider components={shortcodes}>{children}</MDXProvider>
-            <hr />
+export default ({ children, pageContext }) => {
+    return (
+        <div>
+            <Header />
+
+            {pageContext.frontmatter.title && (
+                <div style={contentStyle}>
+                    <h1>
+                        {pageContext.frontmatter.title} <i>({pageContext.frontmatter.date})</i>
+                    </h1>
+                </div>
+            )}
+
+            <div style={contentStyle}>
+                <MDXProvider components={shortcodes}>{children}</MDXProvider>
+                <hr />
+            </div>
+            <Articles />
         </div>
-        <Articles />
-    </div>
-);
+    );
+};

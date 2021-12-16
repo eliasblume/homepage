@@ -1,5 +1,4 @@
 import rehypeHighlight from "rehype-highlight";
-import remarkHighlight from "remark-highlight.js";
 import "dotenv/config";
 
 module.exports = {
@@ -16,6 +15,7 @@ module.exports = {
                 icon: "src/images/icon.png",
             },
         },
+        "gatsby-plugin-mdx-frontmatter",
         {
             resolve: `gatsby-plugin-mdx`,
             options: {
