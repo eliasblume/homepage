@@ -14,6 +14,7 @@ const headStyle = {
 const linkStyle = {
     color: "#121212",
     margin: "0 10px 0 10px",
+    textTransform: "uppercase",
 };
 
 const divStyle = {
@@ -37,6 +38,10 @@ export default function Template() {
                 |
                 <Link style={linkStyle} to={"/posts"}>
                     POSTS
+                </Link>
+                |
+                <Link style={linkStyle} to={"/impressum"}>
+                    Impressum
                 </Link>
             </div>
             <div style={divStyleBuild}>BUILD: {process.env.GATSBY_BUILDINFO}</div>

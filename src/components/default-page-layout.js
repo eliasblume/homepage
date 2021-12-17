@@ -20,24 +20,32 @@ const Inverted = props => (
 
 const shortcodes = { Link, Colorize, Inverted };
 
-export default ({ children, pageContext }) => {
+export default props => {
+    const { pageContext, children } = props;
+    const { frontmatter } = pageContext;
+    console.log(frontmatter);
     return (
         <div>
             <Header />
 
-            {pageContext.frontmatter.title && (
+            {frontmatter.title && frontmatter.date && (
                 <div style={contentStyle}>
                     <h1>
-                        {pageContext.frontmatter.title} <i>({pageContext.frontmatter.date})</i>
+                        {frontmatter.title} <i>({frontmatter.date})</i>
                     </h1>
                 </div>
             )}
 
             <div style={contentStyle}>
                 <MDXProvider components={shortcodes}>{children}</MDXProvider>
-                <hr />
             </div>
-            <Articles />
+
+            {frontmatter.displayPosts !== false && (
+                <div>
+                    <hr />
+                    <Articles />
+                </div>
+            )}
         </div>
     );
 };
